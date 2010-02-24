@@ -1,0 +1,5 @@
+We don't use librt, so don't try and link against it.
+
+Related to: https://github.com/zeromq/libzmq/pull/4702.
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
