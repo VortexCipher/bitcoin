@@ -1,0 +1,3 @@
+include minisketch/sources.mk
+
+LIBMINISKETCH_CPPFLAGS=
