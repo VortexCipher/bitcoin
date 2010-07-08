@@ -1,0 +1,1 @@
+function(check_string_option_value option)
