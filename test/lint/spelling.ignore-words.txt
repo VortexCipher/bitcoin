@@ -1,0 +1,3 @@
+afile
+amountIn
+asend
