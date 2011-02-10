@@ -1,0 +1,2 @@
+package=libnatpmp
+$(package)_version=f2433bec24ca3d3f22a8a7840728a3ac177f94ba
