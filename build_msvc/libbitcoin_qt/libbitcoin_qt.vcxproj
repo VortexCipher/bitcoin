@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\common.init.vcxproj" />
+  <Import Project="..\common.qt.init.vcxproj" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}</ProjectGuid>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\qt\addressbookpage.cpp" />
+    <ClCompile Include="..\..\src\qt\addresstablemodel.cpp" />
+    <ClCompile Include="..\..\src\qt\askpassphrasedialog.cpp" />
+    <ClCompile Include="..\..\src\qt\bantablemodel.cpp" />
+    <ClCompile Include="..\..\src\qt\bitcoin.cpp" />
+    <ClCompile Include="..\..\src\qt\bitcoinaddressvalidator.cpp" />
+    <ClCompile Include="..\..\src\qt\bitcoinamountfield.cpp" />
+    <ClCompile Include="..\..\src\qt\bitcoingui.cpp" />
+    <ClCompile Include="..\..\src\qt\bitcoinstrings.cpp" />
+    <ClCompile Include="..\..\src\qt\bitcoinunits.cpp" />
+    <ClCompile Include="..\..\src\qt\clientmodel.cpp" />
+    <ClCompile Include="..\..\src\qt\coincontroldialog.cpp" />
+    <ClCompile Include="..\..\src\qt\coincontroltreewidget.cpp" />
