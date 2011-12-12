@@ -1,0 +1,4 @@
+Language:        Cpp
+AccessModifierOffset: -4
+AlignAfterOpenBracket: true
+AlignEscapedNewlinesLeft: true
