@@ -1,0 +1,3 @@
+# Build matrix / environment variables are explained on:
+# https://www.appveyor.com/docs/appveyor-yml/
+# This file can be validated on: https://ci.appveyor.com/tools/validate-yaml
