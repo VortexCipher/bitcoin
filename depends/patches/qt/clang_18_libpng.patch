@@ -1,0 +1,4 @@
+fix Qt macOS build with Clang 18
+
+    See:
+    https://github.com/pnggroup/libpng/commit/893b8113f04d408cc6177c6de19c9889a48faa24.
