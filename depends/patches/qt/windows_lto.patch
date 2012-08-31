@@ -1,0 +1,3 @@
+Qt (for Windows) fails to build under LTO, due to multiple definition issues, i.e
+
+multiple definition of `QAccessibleLineEdit::~QAccessibleLineEdit()';
