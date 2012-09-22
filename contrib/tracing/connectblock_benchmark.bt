@@ -1,0 +1,15 @@
+#!/usr/bin/env bpftrace
+
+/*
+
+  USAGE:
+
+  bpftrace contrib/tracing/connectblock_benchmark.bt <start height> <end height> <logging threshold in ms>
+
+  - <start height> sets the height at which the benchmark should start. Setting
+    the start height to 0 starts the benchmark immediately, even before the
+    first block is connected.
+  - <end height> sets the height after which the benchmark should end. Setting
+    the end height to 0 disables the benchmark. The script only logs blocks
+    over <logging threshold in ms>.
+  - Threshold <logging threshold in ms>
