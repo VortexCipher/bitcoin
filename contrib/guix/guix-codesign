@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+export LC_ALL=C
+set -e -o pipefail
+
+# Source the common prelude, which:
+#   1. Checks if we're at the top directory of the Bitcoin Core repository
+#   2. Defines a few common functions and variables
+#
+# shellcheck source=libexec/prelude.bash
+source "$(dirname "${BASH_SOURCE[0]}")/libexec/prelude.bash"
+
+
+###################
+## SANITY CHECKS ##
+###################
+
+################
+# Required non-builtin commands should be invocable
+################
+
+check_tools cat mkdir git guix
+
+################
+# Required env vars should be non-empty
+################
+
+cmd_usage() {
+    cat <<EOF
+Synopsis:
+
+    env DETACHED_SIGS_REPO=<path/to/bitcoin-detached-sigs> \\
+      ./contrib/guix/guix-codesign
+
+EOF
+}
+
+if [ -z "$DETACHED_SIGS_REPO" ]; then
