@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\common.init.vcxproj" />
+  <Import Project="..\common.qt.init.vcxproj" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7E99172D-7FF2-4CB6-B736-AC9B76ED412A}</ProjectGuid>
+    <ConfigurationType>Application</ConfigurationType>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
