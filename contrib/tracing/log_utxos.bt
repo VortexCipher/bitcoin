@@ -1,0 +1,8 @@
+#!/usr/bin/env bpftrace
+
+/*
+
+  USAGE:
+
+  bpftrace contrib/tracing/log_utxos.bt
+
