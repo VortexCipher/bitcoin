@@ -1,0 +1,10 @@
+QtGui: Fix duplication of logging category lcQpaFonts
+
+Move it to qplatformfontdatabase.h.
+
+Upstream commit:
+ - Qt 6.0: ab01885e48873fb2ad71841a3f1627fe4d9cd835
+
+--- a/qtbase/src/gui/text/qplatformfontdatabase.cpp
++++ b/qtbase/src/gui/text/qplatformfontdatabase.cpp
+@@ -52,6 +52,8 @@
