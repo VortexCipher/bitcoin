@@ -1,0 +1,1 @@
+build: remove explicit -lm link from qttools
