@@ -1,0 +1,3 @@
+cmake: set minimum version to 3.5
+
+Fix generated pkg-config files, see
