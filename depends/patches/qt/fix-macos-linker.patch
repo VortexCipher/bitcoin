@@ -1,0 +1,5 @@
+qmake: Don't error out if QMAKE_DEFAULT_LIBDIRS is empty on macOS
+
+The new linker in Xcode 15 doesn't provide any default linker or
+framework paths when requested via -v, but still seems to use the
+default paths documented in the ld man page.
