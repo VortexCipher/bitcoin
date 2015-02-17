@@ -1,0 +1,4 @@
+Fix unusable memory_resource on macos
+
+See https://bugreports.qt.io/browse/QTBUG-117484
+and https://bugreports.qt.io/browse/QTBUG-114316
