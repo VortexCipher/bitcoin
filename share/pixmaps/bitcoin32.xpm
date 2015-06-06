@@ -1,0 +1,14 @@
+/* XPM */
+static char *bitcoin__[] = {
+/* columns rows colors chars-per-pixel */
+"32 32 102 2",
+"   c #CC7D1D",
+".  c #D5831F",
+"X  c #D48221",
+"o  c #D98621",
+"O  c #DC8820",
+"+  c #DC8D2C",
+"@  c #D98F36",
+"#  c #D68F39",
+"$  c #DD943E",
+"%  c #E28B23",
