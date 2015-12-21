@@ -1,0 +1,6 @@
+From 9563cef873ae82e06f60708d706d054717e801ce Mon Sep 17 00:00:00 2001
+From: Carl Dong <contact@carldong.me>
+Date: Thu, 18 Jul 2019 17:22:05 -0400
+Subject: [PATCH] Wrap xlib related code blocks in #if's
+
+They are not necessary to compile QT.
