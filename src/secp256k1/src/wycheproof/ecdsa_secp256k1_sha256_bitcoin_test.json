@@ -1,0 +1,636 @@
+{
+  "algorithm" : "ECDSA",
+  "schema" : "ecdsa_bitcoin_verify_schema.json",
+  "generatorVersion" : "0.9rc5",
+  "numberOfTests" : 463,
+  "header" : [
+    "Test vectors of type EcdsaBitcoinVerify are meant for the verification",
+    "of a ECDSA variant used for bitcoin, that add signature non-malleability."
+  ],
+  "notes" : {
+    "ArithmeticError" : {
+      "bugType" : "EDGE_CASE",
+      "description" : "Some implementations of ECDSA have arithmetic errors that occur when intermediate results have extreme values. This test vector has been constructed to test such occurences.",
+      "cves" : [
+        "CVE-2017-18146"
+      ]
+    },
+    "BerEncodedSignature" : {
+      "bugType" : "BER_ENCODING",
+      "description" : "ECDSA signatures are usually DER encoded. This signature contains valid values for r and s, but it uses alternative BER encoding.",
+      "effect" : "Accepting alternative BER encodings may be benign in some cases, or be an issue if protocol requires signature malleability.",
+      "cves" : [
+        "CVE-2020-14966",
+        "CVE-2020-13822",
+        "CVE-2019-14859",
+        "CVE-2016-1000342"
+      ]
+    },
+    "EdgeCasePublicKey" : {
+      "bugType" : "EDGE_CASE",
+      "description" : "The test vector uses a special case public key. "
+    },
+    "EdgeCaseShamirMultiplication" : {
+      "bugType" : "EDGE_CASE",
+      "description" : "Shamir proposed a fast method for computing the sum of two scalar multiplications efficiently. This test vector has been constructed so that an intermediate result is the point at infinity if Shamir's method is used."
+    },
+    "IntegerOverflow" : {
+      "bugType" : "CAN_OF_WORMS",
+      "description" : "The test vector contains an r and s that has been modified, so that the original value is restored if the implementation ignores the most significant bits.",
+      "effect" : "Without further analysis it is unclear if the modification can be used to forge signatures."
+    },
+    "InvalidEncoding" : {
+      "bugType" : "CAN_OF_WORMS",
+      "description" : "ECDSA signatures are encoded using ASN.1. This test vector contains an incorrectly encoded signature. The test vector itself was generated from a valid signature by modifying its encoding.",
+      "effect" : "Without further analysis it is unclear if the modification can be used to forge signatures."
+    },
+    "InvalidSignature" : {
+      "bugType" : "AUTH_BYPASS",
+      "description" : "The signature contains special case values such as r=0 and s=0. Buggy implementations may accept such values, if the implementation does not check boundaries and computes s^(-1) == 0.",
+      "effect" : "Accepting such signatures can have the effect that an adversary can forge signatures without even knowning the message to sign.",
+      "cves" : [
+        "CVE-2022-21449",
+        "CVE-2021-43572",
+        "CVE-2022-24884"
+      ]
+    },
+    "InvalidTypesInSignature" : {
+      "bugType" : "AUTH_BYPASS",
+      "description" : "The signature contains invalid types. Dynamic typed languages sometime coerce such values of different types into integers. If an implementation is careless and has additional bugs, such as not checking integer boundaries then it may be possible that such signatures are accepted.",
+      "effect" : "Accepting such signatures can have the effect that an adversary can forge signatures without even knowning the message to sign.",
+      "cves" : [
+        "CVE-2022-21449"
+      ]
+    },
+    "ModifiedInteger" : {
+      "bugType" : "CAN_OF_WORMS",
+      "description" : "The test vector contains an r and s that has been modified. The goal is to check for arithmetic errors.",
+      "effect" : "Without further analysis it is unclear if the modification can be used to forge signatures."
+    },
+    "ModifiedSignature" : {
+      "bugType" : "CAN_OF_WORMS",
+      "description" : "The test vector contains an invalid signature that was generated from a valid signature by modifying it.",
+      "effect" : "Without further analysis it is unclear if the modification can be used to forge signatures."
+    },
+    "ModularInverse" : {
+      "bugType" : "EDGE_CASE",
+      "description" : "The test vectors contains a signature where computing the modular inverse of s hits an edge case.",
+      "effect" : "While the signature in this test vector is constructed and similar cases are unlikely to occur, it is important to determine if the underlying arithmetic error can be used to forge signatures.",
+      "cves" : [
+        "CVE-2019-0865"
+      ]
+    },
+    "PointDuplication" : {
+      "bugType" : "EDGE_CASE",
+      "description" : "Some implementations of ECDSA do not handle duplication and points at infinity correctly. This is a test vector that has been specially crafted to check for such an omission.",
+      "cves" : [
+        "2020-12607",
+        "CVE-2015-2730"
+      ]
+    },
+    "RangeCheck" : {
+      "bugType" : "CAN_OF_WORMS",
+      "description" : "The test vector contains an r and s that has been modified. By adding or subtracting the order of the group (or other values) the test vector checks whether signature verification verifies the range of r and s.",
+      "effect" : "Without further analysis it is unclear if the modification can be used to forge signatures."
+    },
+    "SignatureMalleabilityBitcoin" : {
+      "bugType" : "SIGNATURE_MALLEABILITY",
+      "description" : "\"BitCoins\"-curves are curves where signature malleability can be a serious issue. An implementation should only accept a signature s where s < n/2. If an implementation is not meant for uses cases that require signature malleability then this implemenation should be tested with another set of test vectors.",
+      "effect" : "In bitcoin exchanges, it may be used to make a double deposits or double withdrawals",
+      "links" : [
+        "https://en.bitcoin.it/wiki/Transaction_malleability",
+        "https://en.bitcoinwiki.org/wiki/Transaction_Malleability"
+      ]
+    },
+    "SmallRandS" : {
+      "bugType" : "EDGE_CASE",
+      "description" : "The test vectors contains a signature where both r and s are small integers. Some libraries cannot verify such signatures.",
+      "effect" : "While the signature in this test vector is constructed and similar cases are unlikely to occur, it is important to determine if the underlying arithmetic error can be used to forge signatures.",
+      "cves" : [
+        "2020-13895"
+      ]
+    },
+    "SpecialCaseHash" : {
+      "bugType" : "EDGE_CASE",
+      "description" : "The test vector contains a signature where the hash of the message is a special case, e.g., contains a long run of 0 or 1 bits."
+    },
+    "ValidSignature" : {
+      "bugType" : "BASIC",
+      "description" : "The test vector contains a valid signature that was generated pseudorandomly. Such signatures should not fail to verify unless some of the parameters (e.g. curve or hash function) are not supported."
+    }
+  },
+  "testGroups" : [
+    {
+      "type" : "EcdsaBitcoinVerify",
+      "publicKey" : {
+        "type" : "EcPublicKey",
+        "curve" : "secp256k1",
+        "keySize" : 256,
+        "uncompressed" : "04b838ff44e5bc177bf21189d0766082fc9d843226887fc9760371100b7ee20a6ff0c9d75bfba7b31a6bca1974496eeb56de357071955d83c4b1badaa0b21832e9",
+        "wx" : "00b838ff44e5bc177bf21189d0766082fc9d843226887fc9760371100b7ee20a6f",
+        "wy" : "00f0c9d75bfba7b31a6bca1974496eeb56de357071955d83c4b1badaa0b21832e9"
+      },
+      "publicKeyDer" : "3056301006072a8648ce3d020106052b8104000a03420004b838ff44e5bc177bf21189d0766082fc9d843226887fc9760371100b7ee20a6ff0c9d75bfba7b31a6bca1974496eeb56de357071955d83c4b1badaa0b21832e9",
+      "publicKeyPem" : "-----BEGIN PUBLIC KEY-----\nMFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEuDj/ROW8F3vyEYnQdmCC/J2EMiaIf8l2\nA3EQC37iCm/wyddb+6ezGmvKGXRJbutW3jVwcZVdg8Sxutqgshgy6Q==\n-----END PUBLIC KEY-----\n",
+      "sha" : "SHA-256",
+      "tests" : [
+        {
+          "tcId" : 1,
+          "comment" : "Signature malleability",
+          "flags" : [
+            "SignatureMalleabilityBitcoin"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3046022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc9832365022100900e75ad233fcc908509dbff5922647db37c21f4afd3203ae8dc4ae7794b0f87",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 2,
+          "comment" : "valid",
+          "flags" : [
+            "ValidSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "valid"
+        },
+        {
+          "tcId" : 3,
+          "comment" : "length of sequence [r, s] uses long form encoding",
+          "flags" : [
+            "BerEncodedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "308145022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 4,
+          "comment" : "length of sequence [r, s] contains a leading 0",
+          "flags" : [
+            "BerEncodedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30820045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 5,
+          "comment" : "length of sequence [r, s] uses 70 instead of 69",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3046022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 6,
+          "comment" : "length of sequence [r, s] uses 68 instead of 69",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3044022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 7,
+          "comment" : "uint32 overflow in length of sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30850100000045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 8,
+          "comment" : "uint64 overflow in length of sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3089010000000000000045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 9,
+          "comment" : "length of sequence [r, s] = 2**31 - 1",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30847fffffff022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 10,
+          "comment" : "length of sequence [r, s] = 2**31",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "308480000000022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 11,
+          "comment" : "length of sequence [r, s] = 2**32 - 1",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3084ffffffff022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 12,
+          "comment" : "length of sequence [r, s] = 2**40 - 1",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3085ffffffffff022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 13,
+          "comment" : "length of sequence [r, s] = 2**64 - 1",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3088ffffffffffffffff022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 14,
+          "comment" : "incorrect length of sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30ff022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 15,
+          "comment" : "replaced sequence [r, s] by an indefinite length tag without termination",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3080022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 16,
+          "comment" : "removing sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 17,
+          "comment" : "lonely sequence tag",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 18,
+          "comment" : "appending 0's to sequence [r, s]",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3047022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 19,
+          "comment" : "prepending 0's to sequence [r, s]",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30470000022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 20,
+          "comment" : "appending unused 0's to sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 21,
+          "comment" : "appending null value to sequence [r, s]",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3047022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0500",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 22,
+          "comment" : "prepending garbage to sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "304a4981773045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 23,
+          "comment" : "prepending garbage to sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "304925003045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 24,
+          "comment" : "appending garbage to sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30473045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0004deadbeef",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 25,
+          "comment" : "including undefined tags",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "304daa00bb00cd003045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 26,
+          "comment" : "including undefined tags",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "304d2229aa00bb00cd00022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 27,
+          "comment" : "including undefined tags",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "304d022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc98323652228aa00bb00cd0002206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 28,
+          "comment" : "truncated length of sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3081",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 29,
+          "comment" : "including undefined tags to sequence [r, s]",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "304baa02aabb3045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 30,
+          "comment" : "using composition with indefinite length for sequence [r, s]",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30803045022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 31,
+          "comment" : "using composition with wrong tag for sequence [r, s]",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30803145022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 32,
+          "comment" : "Replacing sequence [r, s] with NULL",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "0500",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 33,
+          "comment" : "changing tag value of sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "2e45022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 34,
+          "comment" : "changing tag value of sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "2f45022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 35,
+          "comment" : "changing tag value of sequence [r, s]",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3145022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 36,
+          "comment" : "changing tag value of sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3245022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 37,
+          "comment" : "changing tag value of sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "ff45022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 38,
+          "comment" : "dropping value of sequence [r, s]",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 39,
+          "comment" : "using composition for sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "304930010230442100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 40,
+          "comment" : "truncated sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3044022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 41,
+          "comment" : "truncated sequence [r, s]",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30442100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 42,
+          "comment" : "sequence [r, s] of size 4166 to check for overflows",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30821046022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 43,
+          "comment" : "indefinite length",
+          "flags" : [
+            "BerEncodedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3080022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 44,
+          "comment" : "indefinite length with truncated delimiter",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3080022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba00",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 45,
+          "comment" : "indefinite length with additional element",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3080022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba05000000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 46,
+          "comment" : "indefinite length with truncated element",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3080022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba060811220000",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 47,
+          "comment" : "indefinite length with garbage",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3080022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0000fe02beef",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 48,
+          "comment" : "indefinite length with nonempty EOC",
+          "flags" : [
+            "InvalidEncoding"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3080022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba0002beef",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 49,
+          "comment" : "prepend empty sequence",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "30473000022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba",
+          "result" : "invalid"
+        },
+        {
+          "tcId" : 50,
+          "comment" : "append empty sequence",
+          "flags" : [
+            "ModifiedSignature"
+          ],
+          "msg" : "313233343030",
+          "sig" : "3047022100813ef79ccefa9a56f7ba805f0e478584fe5f0dd5f567bc09b5123ccbc983236502206ff18a52dcc0336f7af62400a6dd9b810732baf1ff758000d6f613a556eb31ba3000",
+          "result" : "invalid"
+        },
