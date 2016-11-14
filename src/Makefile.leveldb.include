@@ -1,0 +1,15 @@
+# Copyright (c) 2016 The Bitcoin Core developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+LIBLEVELDB_INT = leveldb/libleveldb.la
+LIBMEMENV_INT  = leveldb/libmemenv.la
+
+noinst_LTLIBRARIES += $(LIBLEVELDB_INT)
+noinst_LTLIBRARIES += $(LIBMEMENV_INT)
+
+LIBLEVELDB = $(LIBLEVELDB_INT) $(LIBCRC32C)
+LIBMEMENV = $(LIBMEMENV_INT)
+
+LEVELDB_CPPFLAGS =
+LEVELDB_CPPFLAGS += -I$(srcdir)/leveldb/include
