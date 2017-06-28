@@ -1,0 +1,8 @@
+# Build matrix / environment variables are explained on:
+# http://about.travis-ci.org/docs/user/build-configuration/
+# This file can be validated on: http://lint.travis-ci.org/
+
+language: cpp
+dist: bionic
+osx_image: xcode10.3
+
