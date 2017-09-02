@@ -1,0 +1,14 @@
+commit 3311d68f11d1697565401eee6efc85c34f022ea7
+Author: fanquake <fanquake@gmail.com>
+Date:   Mon Aug 17 20:03:56 2020 +0800
+
+    Fix C++11 compatibility
+
+diff --git a/dbinc/atomic.h b/dbinc/atomic.h
+index 0034dcc..7c11d4a 100644
+--- a/dbinc/atomic.h
++++ b/dbinc/atomic.h
+@@ -70,7 +70,7 @@ typedef struct {
+  * These have no memory barriers; the caller must include them when necessary.
+  */
+ #define	atomic_read(p)		((p)->value)
