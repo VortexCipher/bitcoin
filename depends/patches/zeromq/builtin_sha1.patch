@@ -1,0 +1,1 @@
+Don't use builtin sha1 if not using ws
