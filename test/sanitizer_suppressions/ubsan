@@ -1,0 +1,7 @@
+# Suppressions should use `sanitize-type:ClassName::MethodName`.
+
+# -fsanitize=undefined suppressions
+# =================================
+
+# -fsanitize=integer suppressions
+# ===============================
