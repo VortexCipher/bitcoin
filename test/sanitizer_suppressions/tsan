@@ -1,0 +1,4 @@
+# ThreadSanitizer suppressions
+# ============================
+#
+# https://github.com/google/sanitizers/wiki/ThreadSanitizerSuppressions
