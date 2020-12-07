@@ -1,0 +1,5 @@
+This fixes several instances where _MSC_VER was
+used to determine whether to use afunix.h or not.
+
+See https://github.com/zeromq/libzmq/pull/4678.
+--- a/src/ipc_address.hpp
