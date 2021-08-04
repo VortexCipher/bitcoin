@@ -1,0 +1,61 @@
+[
+    [
+        "1FsSia9rv4NeEwvJ2GvXrX7LyxYspbN2mo",
+        "76a914a31c06bd463e3923bc1aadbde48b16976c08071788ac",
+        {
+            "chain": "main",
+            "isPrivkey": false
+        }
+    ],
+    [
+        "36j4NfKv6Akva9amjWrLG6MuSQym1GuEmm",
+        "a914373b819a068f32b7a6b38b6b38729647cfde01c287",
+        {
+            "chain": "main",
+            "isPrivkey": false
+        }
+    ],
+    [
+        "mzK2FFDEhxqHcmrJw1ysqFkVyhUULo45hZ",
+        "76a914ce28b26c57472737f5c3561a1761185bd8589a4388ac",
+        {
+            "chain": "test",
+            "isPrivkey": false
+        }
+    ],
+    [
+        "2NC2hEhe28ULKAJkW5MjZ3jtTMJdvXmByvK",
+        "a914ce0bba75891ff9ec60148d4bd4a09ee2dc5c933187",
+        {
+            "chain": "test",
+            "isPrivkey": false
+        }
+    ],
+    [
+        "mww4LvqtTMKvmeQvizPz2EQv26xTneWrbg",
+        "76a914b4110ba93ac54afc14da3bdd19614774a2d55d2988ac",
+        {
+            "chain": "signet",
+            "isPrivkey": false
+        }
+    ],
+    [
+        "2N1r7aC69VHeE7yQJPDLi9T1PYq4wnwvjuT",
+        "a9145e5a35ab44b3efaea5129ba22b88ba3e2976614587",
+        {
+            "chain": "signet",
+            "isPrivkey": false
+        }
+    ],
+    [
+        "n4fajahJrAuKbN7uNsKjLjQkz9Qn5ewJXQ",
+        "76a914fdeca3b08e38af53d7c4c60e3ad208ce5066441088ac",
+        {
+            "chain": "regtest",
+            "isPrivkey": false
+        }
+    ],
+    [
+        "2MxFajLApXpYk4VodBSZSt7rw8y4ryABkfA",
+        "a91436e9f191e0b75036a77f65e2eaa4752443233fbe87",
+        {
