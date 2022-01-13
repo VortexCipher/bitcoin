@@ -1,0 +1,8 @@
+Modify optimisation flags for various functions.
+This fixes non-determinism issues in the asm produced for
+these function when cross-compiling on x86_64 and aarch64 for
+the arm64-apple-darwin HOST.
+
+--- a/qtbase/src/corelib/itemmodels/qitemselectionmodel.cpp
++++ b/qtbase/src/corelib/itemmodels/qitemselectionmodel.cpp
+@@ -1078,9 +1078,9 @@ void QItemSelectionModelPrivate::_q_layoutChanged(const QList<QPersistentModelIn
