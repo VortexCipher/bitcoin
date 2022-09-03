@@ -1,0 +1,15 @@
+env:
+  BUILD: check
+  HOST:
+  MAKEFLAGS: -j4
+  BENCH: yes
+  TESTRUNS:
+  EXEC_CMD:
+  ENABLE_FIELDS:
+
+cat_logs_snippet: &CAT_LOGS
+  on_failure:
+    cat_test_log_script:
+      - cat test-suite.log || true
+    cat_config_log_script:
+      - cat config.log || true
