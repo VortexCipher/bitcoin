@@ -1,0 +1,3 @@
+# /etc/conf.d/bitcoind: config file for /etc/init.d/bitcoind
+
+# Config file location
