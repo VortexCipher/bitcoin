@@ -1,0 +1,2 @@
+Without ffile-prefix-map, the debug symbols will contain paths for the
+guix store which will include the hashes of each package. However, the
